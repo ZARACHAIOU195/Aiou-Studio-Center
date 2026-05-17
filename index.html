@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARACH AIOU | Education Hub</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #141b2d;
+            --text-main: #ffffff;
+            --text-muted: #8a99ad;
+            
+            /* Neon Melty Colors */
+            --neon-pink: #ff007f;
+            --neon-cyan: #00ffcc;
+            --neon-purple: #9d4edd;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- HAMBURGER MENU BUTTON --- */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            width: 45px;
+            height: 40px;
+            background: rgba(20, 27, 45, 0.8);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 8px;
+            box-sizing: border-box;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            animation: menuBlink 2.5s infinite alternate;
+            transition: all 0.3s ease;
+        }
+        .menu-btn:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
+            transform: scale(1.05);
+        }
+        .menu-btn .line {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px #fff;
+        }
+        
+        /* Hamburger to Cross Animation when Active */
+        .menu-btn.active .line:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background-color: var(--neon-pink);
+            box-shadow: 0 0 8px var(--neon-pink);
+        }
+        .menu-btn.active .line:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-btn.active .line:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background-color: var(--neon-pink);
+            box-shadow: 0 0 8px var(--neon-pink);
+        }
+
+        /* --- SIDE NAV MENU --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            box-sizing: border-box;
+            padding: 90px 25px 30px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+            border-left: 3px solid transparent;
+            border-image: linear-gradient(to bottom, var(--neon-pink), var(--neon-cyan), var(--neon-purple)) 1;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+        }
+        .side-menu.open {
+            right: 0;
+        }
+        .menu-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, #ff0055, #00ffcc, #9d4edd, #ff0055);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowText 4s linear infinite;
+        }
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: calc(100% - 180px);
+            padding-right: 5px;
+        }
+        /* Custom Scrollbar for Menu Items */
+        .menu-items::-webkit-scrollbar {
+            width: 5px;
+        }
+        .menu-items::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 10px;
+        }
+        .menu-items li a {
+            display: block;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 15px;
+            background: rgba(20, 27, 45, 0.6);
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .menu-items li a:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 255, 204, 0.05);
+            transform: translateX(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2), inset 0 0 8px rgba(0, 255, 204, 0.1);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        /* --- DEV SECTION IN MENU --- */
+        .menu-dev-footer {
+            background: rgba(20, 27, 45, 0.9);
+            border: 1px dashed var(--neon-pink);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
+            animation: devBoxBlink 3s infinite alternate;
+        }
+        .menu-dev-footer p {
+            margin: 0 0 6px 0;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        .menu-dev-footer .dev-name {
+            font-size: 0.95rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #00ffcc, #9d4edd, #ff0055, #00ffcc);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowText 3s linear infinite;
+        }
+        .menu-dev-footer a {
+            color: #fff;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            padding: 4px 10px;
+            background: #25d366;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+        }
+        .menu-dev-footer a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #25d366;
+        }
+
+        /* Overlay Background when menu is open */
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(3px);
+        }
+        .menu-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- EXISTING HERO/HEADER STYLES --- */
+        .header {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #101626 0%, var(--bg-color) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            position: relative;
+            background: #0d111a;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 
+                0 0 20px var(--neon-cyan),
+                inset 0 0 15px var(--neon-pink);
+            border: 4px solid transparent;
+            animation: neonBlink 2s infinite alternate, meltyShape 6s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header h1 {
+            margin: 15px 0 5px 0;
+            font-size: 2.6rem;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card-large {
+            grid-column: span 1;
+        }
+        @media(min-width: 900px) {
+            .card-large {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            opacity: 0.7;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), inset 0 0 10px rgba(255, 0, 127, 0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--neon-cyan);
+            font-size: 1.4rem;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .media-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: auto;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0d1322;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .video-wrapper:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .images-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .image-wrapper {
+            flex: 1;
+            min-width: 120px;
+            aspect-ratio: 4 / 3;
+            background: #0d1322;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #0b111e;
+        }
+
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        @media(max-width: 600px) {
+            .feedback-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .contact-box {
+            background-color: #111827;
+            border: 2px solid #1f2937;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .contact-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #25d366;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.8);
+        }
+        .email-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0d1322;
+            border-radius: 12px;
+            border: 1px dashed var(--neon-cyan);
+            display: inline-block;
+        }
+        .email-section a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+
+        .marquee-container {
+            background: #141b2d;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee-container h3 {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px rgba(255, 0, 127, 0.4);
+            margin-top: 0;
+            text-align: center;
+        }
+        .review-slider {
+            display: flex;
+            gap: 20px;
+            animation: slideReviews 20s linear infinite;
+            width: max-content;
+        }
+        .review-slider:hover {
+            animation-play-state: paused;
+        }
+        .review-card {
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            padding: 15px;
+            border-radius: 10px;
+            width: 280px;
+            box-shadow: inset 0 0 10px rgba(0,255,204,0.05);
+        }
+        .review-card p {
+            margin: 0 0 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        .review-card span {
+            color: var(--neon-cyan);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* --- RAINBOW FOOTER CREDITS --- */
+        .developer-footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            background: linear-gradient(0deg, #101626 0%, transparent 100%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #ff0055, #00ffcc, #9d4edd, #ff0055);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neonBlink 1.5s infinite alternate, rainbowText 4s linear infinite;
+        }
+
+        /* --- ANIMATIONS CORE --- */
+        @keyframes meltyShape {
+            0% { border-radius: 50% 50% 45% 55% / 50% 45% 55% 50%; }
+            33% { border-radius: 45% 55% 50% 50% / 55% 50% 50% 45%; }
+            66% { border-radius: 55% 45% 55% 45% / 45% 55% 45% 55%; }
+            100% { border-radius: 50% 50% 45% 55% / 50% 45% 55% 50%; }
+        }
+
+        @keyframes neonBlink {
+            0%, 100% {
+                box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-purple), inset 0 0 15px var(--neon-pink);
+                border-color: var(--neon-cyan);
+                opacity: 1;
+            }
+            50% {
+                box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-purple), inset 0 0 5px var(--neon-pink);
+                border-color: var(--neon-pink);
+                opacity: 0.85;
+            }
+            52% { opacity: 0.4; }
+            54% { opacity: 1; }
+        }
+
+        @keyframes menuBlink {
+            0%, 100% { box-shadow: 0 0 12px var(--neon-cyan); border-color: var(--neon-cyan); }
+            50% { box-shadow: 0 0 4px var(--neon-cyan); border-color: rgba(0, 255, 204, 0.5); }
+        }
+
+        @keyframes devBoxBlink {
+            0%, 100% { border-color: var(--neon-pink); box-shadow: 0 0 12px rgba(255, 0, 127, 0.2); }
+            50% { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0, 255, 204, 0.2); }
+        }
+
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideReviews {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="zarasong.mp3" loop autoplay></audio>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle Menu">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </button>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <div>
+            <div class="menu-title">Zarach Work Details</div>
+            <ul class="menu-items">
+                <li><a href="#handwriting" onclick="toggleMenu()">Handwriting Assignment</a></li>
+                <li><a href="#workshop" onclick="toggleMenu()">Workshop Facility</a></li>
+                <li><a href="#quiz" onclick="toggleMenu()">Quiz Solve Hub</a></li>
+                <li><a href="#typed" onclick="toggleMenu()">Typed Unique Assignments</a></li>
+                <li><a href="#online-services" onclick="toggleMenu()">AIOU Online Services</a></li>
+                <li><a href="#feedback" onclick="toggleMenu()">Students Feedback</a></li>
+                <li><a href="#reviews" onclick="toggleMenu()">Best Reviews</a></li>
+                <li><a href="#contact" onclick="toggleMenu()">Contact Portal</a></li>
+            </ul>
+        </div>
+
+        <div class="menu-dev-footer">
+            <p>CONTACT WITH DEVELOPER</p>
+            <span class="dev-name">USMAN GHANI</span>
+            <a href="https://wa.me/923121433842" target="_blank">💬 +92 312 1433842</a>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="logo-container">
+            <img src="zaralogo.jpg" alt="Zara CH AIOU Logo">
+        </div>
+        <h1>ZARA CH AIOU</h1>
+        <p>Education Hub — Allama Iqbal Open University, Islamabad</p>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+            
+            <div class="card card-large" id="handwriting">
+                <div>
+                    <h3>HANDWRITING ASSIGNMENT</h3>
+                    <p>Matric, F.A, B.A, B.COM<br>
+                    Hand Written Assignment<br>
+                    For Order contact on WhatsApp easily</p>
+                </div>
+                
+                <div class="media-container">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="video.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    
+                    <div class="images-row">
+                        <div class="image-wrapper">
+                            <img src="work1.jpg" alt="Handwriting Sample 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="work2.jpg" alt="Handwriting Sample 2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-large" id="workshop">
+                <div>
+                    <h3>Workshop Attending Facility Available</h3>
+                    <p>Workshop Attending Facility Available 💯 <br>
+                    If you are a job holder or unable to attend your workshop due to any busy schedule or personal commitments, you can contact us on the given WhatsApp number to get your workshop attended.</p>
+                </div>
+
+                <div class="media-container">
+                    <div class="images-row">
+                        <div class="image-wrapper">
+                            <img src="hand1.jpg" alt="Workshop Sample Pic 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="hand2.jpg" alt="Workshop Sample Pic 2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-large" id="quiz">
+                <div>
+                    <h3>QUIZ SOLVE</h3>
+                    <p>If you want to score 30 out of 30 marks in your quiz and get your quiz solved with a 100% guarantee, contact us on the given WhatsApp number. 💯💯💯<br>
+                    Get your quiz completed with a guarantee of excellent marks💯.</p>
+                </div>
+
+                <div class="media-container">
+                    <div class="images-row">
+                        <div class="image-wrapper">
+                            <img src="quiz1.jpg" alt="Quiz Sample Pic 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="quiz2.jpg" alt="Quiz Sample Pic 2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-large" id="typed">
+                <div>
+                    <h3>Typed Unique Assignments Available</h3>
+                    <p>And if you want to get your side assignments prepared without plagiarism, with a 100% guarantee and authentic 90+ marks assurance, contact us to get your assignments submitted professionally.💯<br>
+                    You can also check assignment feedback screenshots below as proof of quality work.😍</p>
+                </div>
+
+                <div class="media-container">
+                    <div class="images-row">
+                        <div class="image-wrapper">
+                            <img src="zara1.jpg" alt="Assignment Feedback 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="zara2.jpg" alt="Assignment Feedback 2">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="zara3.jpg" alt="Assignment Feedback 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-large" id="online-services">
+                <div>
+                    <h3>AIOU ALL ONLINE SERVICES</h3>
+                    <p>If you want to avail all services related to Allama Iqbal Open University, including name correction, address change, center change, paper help, quiz help, workshop help, assignment help, and all other academic services, please contact us on the given WhatsApp number.<br><br>
+                    All kinds of facilities and assistance will be provided without any bribery.<br>
+                    Your work will be completed honestly, InshAllah 😍💯❤️</p>
+                </div>
+
+                <div class="media-container">
+                    <div class="images-row">
+                        <div class="image-wrapper">
+                            <img src="naa1.jpg" alt="AIOU Service Feedback 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="naa2.jpg" alt="AIOU Service Feedback 2">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="naa3.jpg" alt="AIOU Service Feedback 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-large" id="feedback">
+                <div>
+                    <h3>STUDENTS FEEDBACK</h3>
+                    <p>You can check the feedback of all my students in the screenshots below.<br>
+                    First review the feedback, then place your order with confidence.<br>
+                    100% authentic services with guaranteed quality and trusted work.<br>
+                    After checking the feedback, you can order your required service.<br><br>
+                    <strong>Zara Chaudhry — A Name of Trust 😍💯</strong></p>
+                </div>
+
+                <div class="media-container">
+                    <div class="feedback-grid">
+                        <div class="image-wrapper">
+                            <img src="la1.jpg" alt="Student Feedback 1">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la2.jpg" alt="Student Feedback 2">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la3.jpg" alt="Student Feedback 3">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la4.jpg" alt="Student Feedback 4">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la5.jpg" alt="Student Feedback 5">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la6.jpg" alt="Student Feedback 6">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la7.jpg" alt="Student Feedback 7">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la8.jpg" alt="Student Feedback 8">
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="la9.jpg" alt="Student Feedback 9">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="marquee-container" id="reviews">
+            <h3>BEST REVIEWS</h3>
+            <div class="review-slider">
+                <div class="review-card">
+                    <p>"Bohot acha kaam kiya, Quiz me full marks aye hain. Highly recommended!"</p>
+                    <span>— Ali Raza (B.A Student)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Handwritten assignments are so clean and beautiful. Thank you Zara sis!"</p>
+                    <span>— Sana Khan (F.A Student)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Workshop complete attend ho gayi baghair kisi problem k. Inshallah next time bhi yahin se karwaun ga."</p>
+                    <span>— Kamran Ahmed (B.Com)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Most trusted academic group for AIOU portal services. Authentic results!"</p>
+                    <span>— Zainab Bibi (M.A Student)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Bohot acha kaam kiya, Quiz me full marks aye hain. Highly recommended!"</p>
+                    <span>— Ali Raza (B.A Student)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Handwritten assignments are so clean and beautiful. Thank you Zara sis!"</p>
+                    <span>— Sana Khan (F.A Student)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Workshop complete attend ho gayi baghair kisi problem k. Inshallah next time bhi yahin se karwaun ga."</p>
+                    <span>— Kamran Ahmed (B.Com)</span>
+                </div>
+                <div class="review-card">
+                    <p>"Most trusted academic group for AIOU portal services. Authentic results!"</p>
+                    <span>— Zainab Bibi (M.A Student)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-box" id="contact">
+            <h3>CONNECT WITH US ON WHATSAPP</h3>
+            <p>Click any link below to directly chat on WhatsApp and place your academic order immediately.</p>
+            
+            <div class="contact-buttons-container">
+                <a href="https://wa.me/923016041197" target="_blank" class="whatsapp-btn">
+                    💬 Contact Support 1 (+92 301 6041197)
+                </a>
+                <a href="https://wa.me/923464143993" target="_blank" class="whatsapp-btn">
+                    💬 Contact Support 2 (+92 346 4143993)
+                </a>
+            </div>
+
+            <div class="email-section">
+                <span>📧 Official Email Address: </span>
+                <a href="mailto:itzzara195@gmail.com">itzzara195@gmail.com</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="developer-footer">
+        DEVELOPER USMAN GHANI
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function toggleMenu() {
+            menuBtn.classList.toggle('active');
+            sideMenu.classList.toggle('open');
+            menuOverlay.classList.toggle('show');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        // Music play trigger upon click
+        window.addEventListener('click', () => {
+            const audio = document.getElementById('bg-music');
+            if(audio.paused) {
+                audio.play().catch(err => console.log("Audio play interaction handled: ", err));
+            }
+        });
+    </script>
+</body>
+</html>
