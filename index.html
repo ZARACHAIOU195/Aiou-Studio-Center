@@ -410,7 +410,7 @@
             background-color: #111827;
             border: 2px solid #1f2937;
             border-radius: 16px;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
             margin-top: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -418,27 +418,69 @@
         .contact-buttons-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 18px;
         }
         .whatsapp-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            background-color: #25d366;
+            background: linear-gradient(135deg, #0b1221 0%, #141e33 100%);
             color: #fff;
-            text-decoration: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 30px;
-            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+            border: 2px solid var(--neon-cyan);
+            padding: 15px 30px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.25);
+            animation: vipBtnBlink 1.8s infinite alternate;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        .whatsapp-btn.vip-alt {
+            border-color: var(--neon-pink);
+            animation: vipBtnBlinkAlt 1.8s infinite alternate;
+        }
         .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(37, 211, 102, 0.8);
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 0 28px var(--neon-cyan), 0 0 40px var(--neon-pink);
+        }
+        @keyframes vipBtnBlink {
+            0%, 100% {
+                border-color: var(--neon-cyan);
+                box-shadow: 0 0 14px var(--neon-cyan), 0 0 28px rgba(0, 255, 204, 0.4), inset 0 0 10px rgba(0, 255, 204, 0.25);
+                text-shadow: 0 0 8px var(--neon-cyan);
+                opacity: 1;
+            }
+            50% {
+                border-color: var(--neon-purple);
+                box-shadow: 0 0 8px var(--neon-purple), 0 0 18px rgba(157, 78, 221, 0.35), inset 0 0 6px rgba(157, 78, 221, 0.2);
+                text-shadow: 0 0 5px var(--neon-purple);
+                opacity: 0.85;
+            }
+            53% { opacity: 0.45; }
+            56% { opacity: 1; }
+        }
+        @keyframes vipBtnBlinkAlt {
+            0%, 100% {
+                border-color: var(--neon-pink);
+                box-shadow: 0 0 14px var(--neon-pink), 0 0 28px rgba(255, 0, 127, 0.4), inset 0 0 10px rgba(255, 0, 127, 0.25);
+                text-shadow: 0 0 8px var(--neon-pink);
+                opacity: 1;
+            }
+            50% {
+                border-color: var(--neon-cyan);
+                box-shadow: 0 0 8px var(--neon-cyan), 0 0 18px rgba(0, 255, 204, 0.35), inset 0 0 6px rgba(0, 255, 204, 0.2);
+                text-shadow: 0 0 5px var(--neon-cyan);
+                opacity: 0.85;
+            }
+            53% { opacity: 0.45; }
+            56% { opacity: 1; }
         }
         .email-section {
             margin-top: 20px;
@@ -802,12 +844,12 @@
             <p>Click any link below to directly chat on WhatsApp and place your academic order immediately.</p>
             
             <div class="contact-buttons-container">
-                <a href="https://wa.me/923016041197" target="_blank" class="whatsapp-btn">
-                    💬 Contact Support 1 (+92 301 6041197)
-                </a>
-                <a href="https://wa.me/923464143993" target="_blank" class="whatsapp-btn">
-                    💬 Contact Support 2 (+92 346 4143993)
-                </a>
+                <button type="button" onclick="openWhatsAppChat(1)" class="whatsapp-btn">
+                    💬 Contact Support 1
+                </button>
+                <button type="button" onclick="openWhatsAppChat(2)" class="whatsapp-btn vip-alt">
+                    💬 Contact Support 2
+                </button>
             </div>
 
             <div class="email-section">
@@ -834,6 +876,18 @@
 
         menuBtn.addEventListener('click', toggleMenu);
         menuOverlay.addEventListener('click', toggleMenu);
+
+        // Hidden WhatsApp Direct Chat Script with Pre-filled Greeting
+        function openWhatsAppChat(slot) {
+            const hiddenContacts = {
+                1: atob('OTIzMDE2MDQxMTk3'),
+                2: atob('OTIzNDY0MTQzOTkz')
+            };
+            const target = hiddenContacts[slot];
+            if (!target) return;
+            const greeting = encodeURIComponent('ASSALAMUALAIKUM ZARA CH');
+            window.open(`https://wa.me/${target}?text=${greeting}`, '_blank', 'noopener,noreferrer');
+        }
 
         // Music play trigger upon click
         window.addEventListener('click', () => {
