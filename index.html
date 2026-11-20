@@ -407,80 +407,136 @@
         }
 
         .contact-box {
-            background-color: #111827;
+            background: linear-gradient(180deg, #11192d 0%, #0b101d 100%);
             border: 2px solid #1f2937;
-            border-radius: 16px;
-            padding: 25px 20px;
+            border-radius: 18px;
+            padding: 28px 20px;
             text-align: center;
             margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.08), 0 4px 15px rgba(0, 0, 0, 0.5);
         }
         .contact-buttons-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 24px;
             justify-content: center;
-            margin-top: 18px;
+            margin-top: 22px;
         }
         .whatsapp-btn {
+            position: relative;
+            overflow: hidden;
+            min-width: 240px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #0b1221 0%, #141e33 100%);
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(255, 0, 127, 0.16), rgba(0, 255, 204, 0.14), rgba(157, 78, 221, 0.18));
             color: #fff;
             border: 2px solid var(--neon-cyan);
-            padding: 15px 30px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            letter-spacing: 1px;
+            padding: 18px 34px;
+            font-size: 1.08rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.25);
-            animation: vipBtnBlink 1.8s infinite alternate;
+            box-shadow:
+                0 0 18px var(--neon-cyan),
+                0 0 36px rgba(255, 0, 127, 0.45),
+                inset 0 0 16px rgba(0, 255, 204, 0.35);
+            animation: vipFullNeonBlink 1.5s infinite alternate;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -75%;
+            width: 55%;
+            height: 200%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.35),
+                rgba(0, 255, 204, 0.45),
+                rgba(255, 0, 127, 0.4),
+                transparent
+            );
+            transform: rotate(25deg);
+            animation: vipLightSweep 2.6s linear infinite;
+            pointer-events: none;
         }
         .whatsapp-btn.vip-alt {
             border-color: var(--neon-pink);
-            animation: vipBtnBlinkAlt 1.8s infinite alternate;
+            animation: vipFullNeonBlinkAlt 1.5s infinite alternate;
+        }
+        .whatsapp-btn.vip-alt::before {
+            animation-delay: 1.3s;
         }
         .whatsapp-btn:hover {
-            transform: translateY(-4px) scale(1.04);
-            box-shadow: 0 0 28px var(--neon-cyan), 0 0 40px var(--neon-pink);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 0 28px var(--neon-cyan),
+                0 0 50px var(--neon-pink),
+                0 0 70px rgba(157, 78, 221, 0.7),
+                inset 0 0 22px rgba(255, 255, 255, 0.25);
         }
-        @keyframes vipBtnBlink {
-            0%, 100% {
+        @keyframes vipLightSweep {
+            0% { left: -75%; }
+            100% { left: 135%; }
+        }
+        @keyframes vipFullNeonBlink {
+            0% {
                 border-color: var(--neon-cyan);
-                box-shadow: 0 0 14px var(--neon-cyan), 0 0 28px rgba(0, 255, 204, 0.4), inset 0 0 10px rgba(0, 255, 204, 0.25);
-                text-shadow: 0 0 8px var(--neon-cyan);
+                box-shadow: 0 0 18px var(--neon-cyan), 0 0 38px rgba(0, 255, 204, 0.55), inset 0 0 16px rgba(0, 255, 204, 0.35);
+                text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0, 255, 204, 0.6);
                 opacity: 1;
             }
-            50% {
-                border-color: var(--neon-purple);
-                box-shadow: 0 0 8px var(--neon-purple), 0 0 18px rgba(157, 78, 221, 0.35), inset 0 0 6px rgba(157, 78, 221, 0.2);
-                text-shadow: 0 0 5px var(--neon-purple);
-                opacity: 0.85;
-            }
-            53% { opacity: 0.45; }
-            56% { opacity: 1; }
-        }
-        @keyframes vipBtnBlinkAlt {
-            0%, 100% {
+            45% {
                 border-color: var(--neon-pink);
-                box-shadow: 0 0 14px var(--neon-pink), 0 0 28px rgba(255, 0, 127, 0.4), inset 0 0 10px rgba(255, 0, 127, 0.25);
-                text-shadow: 0 0 8px var(--neon-pink);
-                opacity: 1;
+                box-shadow: 0 0 20px var(--neon-pink), 0 0 42px rgba(255, 0, 127, 0.55), inset 0 0 16px rgba(255, 0, 127, 0.35);
+                text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 127, 0.6);
+                opacity: 0.92;
             }
             50% {
-                border-color: var(--neon-cyan);
-                box-shadow: 0 0 8px var(--neon-cyan), 0 0 18px rgba(0, 255, 204, 0.35), inset 0 0 6px rgba(0, 255, 204, 0.2);
-                text-shadow: 0 0 5px var(--neon-cyan);
-                opacity: 0.85;
+                opacity: 0.4;
             }
-            53% { opacity: 0.45; }
-            56% { opacity: 1; }
+            55% {
+                opacity: 1;
+            }
+            100% {
+                border-color: var(--neon-purple);
+                box-shadow: 0 0 22px var(--neon-purple), 0 0 44px rgba(157, 78, 221, 0.6), inset 0 0 18px rgba(157, 78, 221, 0.4);
+                text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-cyan);
+                opacity: 0.95;
+            }
+        }
+        @keyframes vipFullNeonBlinkAlt {
+            0% {
+                border-color: var(--neon-pink);
+                box-shadow: 0 0 18px var(--neon-pink), 0 0 38px rgba(255, 0, 127, 0.55), inset 0 0 16px rgba(255, 0, 127, 0.35);
+                text-shadow: 0 0 10px var(--neon-pink), 0 0 20px rgba(255, 0, 127, 0.6);
+                opacity: 1;
+            }
+            45% {
+                border-color: var(--neon-purple);
+                box-shadow: 0 0 20px var(--neon-purple), 0 0 42px rgba(157, 78, 221, 0.55), inset 0 0 16px rgba(157, 78, 221, 0.35);
+                text-shadow: 0 0 10px var(--neon-purple), 0 0 20px rgba(157, 78, 221, 0.6);
+                opacity: 0.92;
+            }
+            50% {
+                opacity: 0.4;
+            }
+            55% {
+                opacity: 1;
+            }
+            100% {
+                border-color: var(--neon-cyan);
+                box-shadow: 0 0 22px var(--neon-cyan), 0 0 44px rgba(0, 255, 204, 0.6), inset 0 0 18px rgba(0, 255, 204, 0.4);
+                text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-pink);
+                opacity: 0.95;
+            }
         }
         .email-section {
             margin-top: 20px;
@@ -877,7 +933,7 @@
         menuBtn.addEventListener('click', toggleMenu);
         menuOverlay.addEventListener('click', toggleMenu);
 
-        // Hidden WhatsApp Direct Chat Script with Pre-filled Greeting
+        // Hidden WhatsApp Direct Chat Script with Pre-filled Template
         function openWhatsAppChat(slot) {
             const hiddenContacts = {
                 1: atob('OTIzMDE2MDQxMTk3'),
@@ -885,8 +941,16 @@
             };
             const target = hiddenContacts[slot];
             if (!target) return;
-            const greeting = encodeURIComponent('ASSALAMUALAIKUM ZARA CH');
-            window.open(`https://wa.me/${target}?text=${greeting}`, '_blank', 'noopener,noreferrer');
+            const messageTemplate = [
+                '[ASSALAMUALAIKUM]',
+                '( ZARA CH )',
+                'MY NAME;',
+                'MY AGE;',
+                'CITY;',
+                'CLASS;'
+            ].join('\n');
+            const encodedText = encodeURIComponent(messageTemplate);
+            window.open(`https://wa.me/${target}?text=${encodedText}`, '_blank', 'noopener,noreferrer');
         }
 
         // Music play trigger upon click
